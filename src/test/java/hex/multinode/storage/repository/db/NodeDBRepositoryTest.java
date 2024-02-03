@@ -1,7 +1,7 @@
 package hex.multinode.storage.repository.db;
 
 import hex.multinode.storage.NodeStorageApplication;
-import hex.multinode.storage.config.H2JpaConfig;
+import hex.multinode.storage.config.H2JpaTestConfig;
 import hex.multinode.storage.model.data.MultiContent;
 import hex.multinode.storage.model.data.MultiNode;
 import hex.multinode.storage.model.generator.UUIDV7Generator;
@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {NodeStorageApplication.class, H2JpaConfig.class})
+@SpringBootTest(classes = {NodeStorageApplication.class, H2JpaTestConfig.class})
 public class NodeDBRepositoryTest {
 
     private final NodeDBRepository nodeRepository;

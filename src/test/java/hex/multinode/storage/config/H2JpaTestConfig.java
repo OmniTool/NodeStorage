@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "hex.multinode.storage.repository.db")
-@PropertySource("classpath:/persistence-test.properties")
+@PropertySource("classpath:/app-test.properties")
 @EnableTransactionManagement
-public class H2JpaConfig {
+public class H2JpaTestConfig {
 
 }

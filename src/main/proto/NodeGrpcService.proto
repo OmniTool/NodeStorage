@@ -1,0 +1,58 @@
+syntax = "proto3";
+package hex.multinode.storage.integration.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.example.hex.integration.grpc";
+option java_outer_classname = "NodeEndpointProto";
+
+service NodeEndpointService {
+
+  rpc createNode(CreateNodeRequest) returns (CreateNodeResponse) {
+  }
+  rpc findNodeById(FindNodeByIdRequest) returns (FindNodeByIdResponse) {
+  }
+  rpc findNodesByTitle(FindNodesByTitleRequest) returns (FindNodesByTitleResponse) {
+  }
+  rpc deleteNodeById(DeleteNodeByIdRequest) returns (DeleteNodeByIdResponse) {
+  }
+}
+
+message NodeProto {
+  string id = 1;
+  string title = 2;
+  string text = 3;
+}
+
+message CreateNodeRequest {
+  string title = 1;
+  string text = 2;
+}
+
+message CreateNodeResponse {
+  NodeProto node = 1;
+}
+
+message FindNodeByIdRequest {
+  string id = 1;
+}
+
+message FindNodeByIdResponse {
+  NodeProto node = 1;
+}
+
+message FindNodesByTitleRequest {
+  string title = 1;
+}
+
+message FindNodesByTitleResponse {
+  repeated NodeProto node = 1;
+}
+
+message DeleteNodeByIdRequest {
+  string id = 1;
+}
+
+message DeleteNodeByIdResponse {
+  NodeProto node = 1;
+}
+

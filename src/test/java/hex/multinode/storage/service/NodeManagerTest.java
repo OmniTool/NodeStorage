@@ -1,5 +1,7 @@
 package hex.multinode.storage.service;
 
+import hex.multinode.storage.NodeStorageApplication;
+import hex.multinode.storage.config.H2JpaTestConfig;
 import hex.multinode.storage.model.data.MultiContent;
 import hex.multinode.storage.model.data.MultiNode;
 import hex.multinode.storage.model.dto.NodeDTO;
@@ -17,7 +19,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@SpringBootTest(classes = {NodeStorageApplication.class, H2JpaTestConfig.class})
 public class NodeManagerTest {
 
     private final NodeManager nodeManager;
