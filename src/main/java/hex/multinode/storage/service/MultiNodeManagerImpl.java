@@ -1,5 +1,6 @@
 package hex.multinode.storage.service;
 
+import hex.multinode.storage.aspect.NodeToLog;
 import hex.multinode.storage.model.data.MultiContent;
 import hex.multinode.storage.model.data.MultiFork;
 import hex.multinode.storage.model.data.MultiNode;
@@ -34,7 +35,7 @@ public class MultiNodeManagerImpl implements NodeManager {
     }
 
     @Override
-//    @NodeToLog
+    @NodeToLog
     @Transactional
     public MultiNode save(NodeDTO nodeDTO) {
         MultiNode node = new MultiNode(nodeDTO.title());
@@ -43,7 +44,7 @@ public class MultiNodeManagerImpl implements NodeManager {
     }
 
     @Override
-//    @NodeToLog
+    @NodeToLog
     @Transactional
     public MultiNode save(MultiNode node) {
         return nodeRepository.save(node);
@@ -62,7 +63,7 @@ public class MultiNodeManagerImpl implements NodeManager {
     }
 
     @Override
-//    @NodeToLog
+    @NodeToLog
     @Transactional
     public MultiNode update(NodeDTO nodeDTO) {
         MultiNode node = findById(nodeDTO.id()).orElseThrow();
@@ -72,7 +73,7 @@ public class MultiNodeManagerImpl implements NodeManager {
     }
 
     @Override
-//    @NodeToLog
+    @NodeToLog
     @Transactional
     public MultiNode deleteById(String id) {
         MultiNode node = findById(id).orElseThrow();
