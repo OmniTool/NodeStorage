@@ -15,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class MultiContent {
     @Id
-//    @UuidGenerator
     @GenericGenerator(name = "UUID_v7_id", strategy = "hex.multinode.storage.model.generator.UUIDV7Generator")
     @GeneratedValue(generator = "UUID_v7_id")
     @Column(name = "id", nullable = false)
