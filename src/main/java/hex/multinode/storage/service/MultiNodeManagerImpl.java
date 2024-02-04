@@ -38,6 +38,10 @@ public class MultiNodeManagerImpl implements NodeManager {
     @NodeToLog
     @Transactional
     public MultiNode save(NodeDTO nodeDTO) {
+        return saveNewNodeFromDTO(nodeDTO);
+    }
+
+    private MultiNode saveNewNodeFromDTO(NodeDTO nodeDTO) {
         MultiNode node = new MultiNode(nodeDTO.title());
         updateContent(nodeDTO, node);
         return nodeRepository.save(node);
@@ -51,13 +55,13 @@ public class MultiNodeManagerImpl implements NodeManager {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Optional<MultiNode> findById(String id) {
         return nodeRepository.findById(UUID.fromString(id));
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<MultiNode> findNodesByTitle(String title) {
         return nodeRepository.findNodesByTitle(title);
     }
@@ -83,24 +87,22 @@ public class MultiNodeManagerImpl implements NodeManager {
 
     @Override
     @Transactional
-    public MultiNode fork(String currentNodeId, NodeDTO forkNodeDTO) {
-        MultiNode childNode = new MultiNode(forkNodeDTO.title());
-        updateContent(forkNodeDTO, childNode);
-        childNode = nodeRepository.save(childNode);
-        MultiNode parentNode = nodeRepository.findById(UUID.fromString(currentNodeId)).orElseThrow();
+    public MultiNode fork(String fromNodeId, NodeDTO toNodeDTO, String answer) {
+        MultiNode childNode = saveNewNodeFromDTO(toNodeDTO);
+        MultiNode parentNode = nodeRepository.findById(UUID.fromString(fromNodeId)).orElseThrow();
         updateRoots(childNode, parentNode);
-        updateForks(parentNode, childNode);
+        updateForks(parentNode, childNode, answer);
         return childNode;
     }
 
     @Override
     @Transactional
-    public MultiNode fork(String parentNodeId, String childNodeId) {
+    public MultiNode fork(String fromNodeId, String toNodeId, String answer) {
         return null; //TODO
     }
 
-    private void updateForks(MultiNode parentNode, MultiNode childNode) {
-        forkRepository.save(new MultiFork(parentNode, childNode, "choice to: " + childNode.getTitle()));
+    private void updateForks(MultiNode parentNode, MultiNode childNode, String answer) {
+        forkRepository.save(new MultiFork(parentNode, childNode, answer));
     }
 
     private void updateRoots(MultiNode childNode, MultiNode parentNode) {

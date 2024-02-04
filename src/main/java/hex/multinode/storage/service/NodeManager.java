@@ -21,7 +21,7 @@ public interface NodeManager {
 
     MultiNode deleteById(String id);
 
-    MultiNode fork(String parentNodeId, NodeDTO nodeDTO);
+    MultiNode fork(String fromNodeId, NodeDTO toNodeDTO, String answer);
 
-    MultiNode fork(String parentNodeId, String childNodeId);
+    MultiNode fork(String fromNodeId, String toNodeId, String answer);
 }

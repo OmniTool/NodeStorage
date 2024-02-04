@@ -22,11 +22,11 @@ public class MultiFork {
     @Column(name = "choice_text", nullable = false)
     private String choiceText;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_node_id", nullable = false)
     private MultiNode parentNode;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "child_node_id", nullable = false)
     private MultiNode childNode;
 

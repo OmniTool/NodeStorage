@@ -57,16 +57,44 @@ public class NodeManagerTest {
     }
 
     @Test
-    public void createFromEntity() {
-        String newNodeTitle = "Ворона и лисица";
+    public void fork() {
+        var parentNode = findByTitleAndAssertSingleNode(initialNodeTitle);
+        String newNodeTitle = initialNodeTitle + "[1]";
         String newContentText = """
-                        Вороне где-то бог послал кусочек сыру;
-                        """;
-        var node = new MultiNode(newNodeTitle, new MultiContent(newContentText));
-        var savedNode = nodeManager.save(node);
-        assertNotNull(savedNode);
-        assertNotNull(savedNode.getId());
-        findByIdAndAssertSingleNode(savedNode.getId(), newNodeTitle, newContentText);
+                Оглянуться не успела,
+                Как зима катит в глаза.
+                """;
+        NodeDTO childNodeDTO = NodeDTO.of(newNodeTitle, newContentText);
+
+        var childNode = nodeManager.fork(parentNode.getId().toString(), childNodeDTO, "next");
+        assertNotNull(childNode);
+
+        childNode = findByIdAndAssertSingleNode(childNode.getId(), newNodeTitle, newContentText);
+        var roots = rootRepository.findRootsByChildNodeId(childNode.getId());
+        assertNotNull(roots);
+        assertFalse(roots.isEmpty());
+        assertEquals(newNodeTitle, roots.get(0).getChildNode().getTitle());
+        assertEquals(initialNodeTitle, roots.get(0).getParentNode().getTitle());
+
+        parentNode = findByTitleAndAssertSingleNode(initialNodeTitle);
+        var forks = forkRepository.findForksByParentNodeId(parentNode.getId());
+        assertNotNull(forks);
+        assertFalse(forks.isEmpty());
+        assertEquals(newNodeTitle, forks.get(0).getChildNode().getTitle());
+        assertEquals(initialNodeTitle, forks.get(0).getParentNode().getTitle());
+
+        assertEquals("""
+                Попрыгунья Стрекоза
+                Лето красное пропела;
+                Оглянуться не успела,
+                Как зима катит в глаза.
+                """,
+                parentNode.getContent().getText() + childNode.getContent().getText());
+    }
+
+    @Test
+    public void rollbackTransaction() {
+
     }
 
     @Test
@@ -77,6 +105,19 @@ public class NodeManagerTest {
                         """;
         NodeDTO nodeDTO = NodeDTO.of(newNodeTitle, newContentText);
         var savedNode = nodeManager.save(nodeDTO);
+        assertNotNull(savedNode);
+        assertNotNull(savedNode.getId());
+        findByIdAndAssertSingleNode(savedNode.getId(), newNodeTitle, newContentText);
+    }
+
+    @Test
+    public void createFromEntity() {
+        String newNodeTitle = "Ворона и лисица";
+        String newContentText = """
+                        Вороне где-то бог послал кусочек сыру;
+                        """;
+        var node = new MultiNode(newNodeTitle, new MultiContent(newContentText));
+        var savedNode = nodeManager.save(node);
         assertNotNull(savedNode);
         assertNotNull(savedNode.getId());
         findByIdAndAssertSingleNode(savedNode.getId(), newNodeTitle, newContentText);
@@ -159,41 +200,6 @@ public class NodeManagerTest {
         var nodeId = UUIDV7Generator.generateUuidV7();
         assertThrows(NoSuchElementException.class, () ->
                 nodeManager.deleteById(nodeId.toString()));
-    }
-
-    @Test
-    public void fork() {
-        var parentNode = findByTitleAndAssertSingleNode(initialNodeTitle);
-        String newNodeTitle = initialNodeTitle + "[1]";
-        String newContentText = """
-                Оглянуться не успела,
-                Как зима катит в глаза.
-                """;
-        NodeDTO childNodeDTO = NodeDTO.of(newNodeTitle, newContentText);
-        var childNode = nodeManager.fork(parentNode.getId().toString(), childNodeDTO);
-        assertNotNull(childNode);
-
-        childNode = findByIdAndAssertSingleNode(childNode.getId(), newNodeTitle, newContentText);
-        var roots = rootRepository.findRootsByChildNodeId(childNode.getId());
-        assertNotNull(roots);
-        assertFalse(roots.isEmpty());
-        assertEquals(newNodeTitle, roots.get(0).getChildNode().getTitle());
-        assertEquals(initialNodeTitle, roots.get(0).getParentNode().getTitle());
-
-        parentNode = findByTitleAndAssertSingleNode(initialNodeTitle);
-        var forks = forkRepository.findForksByParentNodeId(parentNode.getId());
-        assertNotNull(forks);
-        assertFalse(forks.isEmpty());
-        assertEquals(newNodeTitle, forks.get(0).getChildNode().getTitle());
-        assertEquals(initialNodeTitle, forks.get(0).getParentNode().getTitle());
-
-        assertEquals("""
-                Попрыгунья Стрекоза
-                Лето красное пропела;
-                Оглянуться не успела,
-                Как зима катит в глаза.
-                """,
-                parentNode.getContent().getText() + childNode.getContent().getText());
     }
 
     private MultiNode findByIdAndAssertSingleNode(UUID id, String nodeTitle, String contentText) {

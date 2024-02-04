@@ -33,7 +33,7 @@ public class MultiNode {
     @OneToMany(mappedBy = "parentNode", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<MultiFork> forks;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "content_id")
     private MultiContent content;
 
