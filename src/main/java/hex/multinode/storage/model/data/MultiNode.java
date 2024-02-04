@@ -13,8 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "multi_node")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MultiNode {
@@ -28,10 +27,10 @@ public class MultiNode {
     private String title;
 
     @OneToMany(mappedBy = "childNode", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<MultiRoot> roots;
+    private List<MultiLink> roots;
 
     @OneToMany(mappedBy = "parentNode", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<MultiFork> forks;
+    private List<MultiLink> forks;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "content_id")
@@ -52,11 +51,11 @@ public class MultiNode {
         this.content = content;
     }
 
-    private List<MultiRoot> getRoots() {
+    private List<MultiLink> getRoots() {
         return roots;
     }
 
-    private List<MultiFork> getForks() {
+    private List<MultiLink> getForks() {
         return forks;
     }
 }

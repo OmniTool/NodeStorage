@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
 @RequestMapping(path = "api/v1/nodes")
 public class NodeController {
 
-    private final NodeManager nodeManager;
+    private final NodeManager<MultiNode> nodeManager;
 
     @Autowired
     public NodeController(NodeManager nodeManager) {

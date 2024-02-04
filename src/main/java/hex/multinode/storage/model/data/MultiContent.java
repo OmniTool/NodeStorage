@@ -9,8 +9,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "multi_content")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class MultiContent {

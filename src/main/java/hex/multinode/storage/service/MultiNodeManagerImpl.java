@@ -2,36 +2,29 @@ package hex.multinode.storage.service;
 
 import hex.multinode.storage.aspect.NodeToLog;
 import hex.multinode.storage.model.data.MultiContent;
-import hex.multinode.storage.model.data.MultiFork;
+import hex.multinode.storage.model.data.MultiLink;
 import hex.multinode.storage.model.data.MultiNode;
-import hex.multinode.storage.model.data.MultiRoot;
 import hex.multinode.storage.model.dto.NodeDTO;
-import hex.multinode.storage.repository.db.ForkDBRepository;
+import hex.multinode.storage.repository.db.LinkDBRepository;
 import hex.multinode.storage.repository.db.NodeDBRepository;
-import hex.multinode.storage.repository.db.RootDBRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class MultiNodeManagerImpl implements NodeManager {
+public class MultiNodeManagerImpl implements NodeManager<MultiNode> {
     private final NodeDBRepository nodeRepository;
-    private final RootDBRepository rootRepository;
-    private final ForkDBRepository forkRepository;
+    private final LinkDBRepository linkRepository;
 
     @Autowired
     public MultiNodeManagerImpl(NodeDBRepository nodeRepository,
-                                RootDBRepository rootRepository,
-                                ForkDBRepository forkRepository) {
+                                LinkDBRepository linkRepository) {
         this.nodeRepository = nodeRepository;
-        this.rootRepository = rootRepository;
-        this.forkRepository = forkRepository;
+        this.linkRepository = linkRepository;
     }
 
     @Override
@@ -39,12 +32,6 @@ public class MultiNodeManagerImpl implements NodeManager {
     @Transactional
     public MultiNode save(NodeDTO nodeDTO) {
         return saveNewNodeFromDTO(nodeDTO);
-    }
-
-    private MultiNode saveNewNodeFromDTO(NodeDTO nodeDTO) {
-        MultiNode node = new MultiNode(nodeDTO.title());
-        updateContent(nodeDTO, node);
-        return nodeRepository.save(node);
     }
 
     @Override
@@ -90,34 +77,40 @@ public class MultiNodeManagerImpl implements NodeManager {
     public MultiNode fork(String fromNodeId, NodeDTO toNodeDTO, String answer) {
         MultiNode childNode = saveNewNodeFromDTO(toNodeDTO);
         MultiNode parentNode = nodeRepository.findById(UUID.fromString(fromNodeId)).orElseThrow();
-        updateRoots(childNode, parentNode);
-        updateForks(parentNode, childNode, answer);
-        return childNode;
+        linkNodes(parentNode, childNode, answer);
+        return parentNode;
     }
 
     @Override
     @Transactional
     public MultiNode fork(String fromNodeId, String toNodeId, String answer) {
-        return null; //TODO
-    }
-
-    private void updateForks(MultiNode parentNode, MultiNode childNode, String answer) {
-        forkRepository.save(new MultiFork(parentNode, childNode, answer));
-    }
-
-    private void updateRoots(MultiNode childNode, MultiNode parentNode) {
-        rootRepository.save(new MultiRoot(childNode, parentNode));
+        MultiNode parentNode = nodeRepository.findById(UUID.fromString(fromNodeId)).orElseThrow();
+        MultiNode childNode = nodeRepository.findById(UUID.fromString(toNodeId)).orElseThrow();
+        linkNodes(parentNode, childNode, answer);
+        return parentNode;
     }
 
     private void updateContent(NodeDTO nodeDTO, MultiNode node) {
         String text = nodeDTO.contentText();
         MultiContent content = node.getContent();
-        if (content != null) {
-            content.setText(text);
-            node.setContent(content);
-        } else {
-            node.setContent(new MultiContent(text));
+        if (content == null) {
+            content = new MultiContent();
         }
+        content.setText(text);
+        node.setContent(content);
+    }
+
+    private MultiNode saveNewNodeFromDTO(NodeDTO nodeDTO) {
+        MultiNode node = new MultiNode(nodeDTO.title());
+        updateContent(nodeDTO, node);
+        return nodeRepository.save(node);
+    }
+
+    private MultiLink linkNodes(MultiNode parentNode, MultiNode childNode, String answer) {
+        return addLink(parentNode, childNode, answer);
+    }
+    private MultiLink addLink(MultiNode parentNode, MultiNode childNode, String answer) {
+        return linkRepository.save(new MultiLink(parentNode, childNode, answer));
     }
 
 }

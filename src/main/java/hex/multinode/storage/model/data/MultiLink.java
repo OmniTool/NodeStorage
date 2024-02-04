@@ -7,12 +7,11 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
 
 @Entity
-@Table(name = "multi_fork")
-@Getter
-@Setter
+@Table(name = "multi_link")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MultiFork {
+public class MultiLink {
     @Id
     @GenericGenerator(name = "UUID_v7_id", strategy = "hex.multinode.storage.model.generator.UUIDV7Generator")
     @GeneratedValue(generator = "UUID_v7_id")
@@ -26,11 +25,11 @@ public class MultiFork {
     @JoinColumn(name = "parent_node_id", nullable = false)
     private MultiNode parentNode;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "child_node_id", nullable = false)
     private MultiNode childNode;
 
-    public MultiFork(MultiNode parentNode, MultiNode childNode, String choiceText) {
+    public MultiLink(MultiNode parentNode, MultiNode childNode, String choiceText) {
         this.parentNode = parentNode;
         this.childNode = childNode;
         this.choiceText = choiceText;
