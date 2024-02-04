@@ -1,7 +1,7 @@
 package hex.multinode.storage.aspect;
 
 import hex.multinode.storage.model.data.MultiNode;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-@Log4j2
+@Slf4j
 public class LoggingAspect {
 
     @Around("@annotation(hex.multinode.storage.aspect.NodeToLog)")

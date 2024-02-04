@@ -9,17 +9,16 @@ import hex.multinode.storage.model.dto.NodeDTO;
 import hex.multinode.storage.service.NodeManager;
 import io.grpc.protobuf.StatusProto;
 import io.grpc.stub.StreamObserver;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 @GRpcService
-@Log4j2
+@Slf4j
 public class NodeEndpointServiceImpl extends NodeEndpointServiceGrpc.NodeEndpointServiceImplBase {
 
     private final NodeManager<MultiNode> nodeManager;
@@ -105,6 +104,8 @@ public class NodeEndpointServiceImpl extends NodeEndpointServiceGrpc.NodeEndpoin
                     .build();
             responseObserver.onError(StatusProto.toStatusRuntimeException(status));
         }
+
+        //TODO global exception handler
     }
 
     private <Rs> void sendResponse(Rs response, StreamObserver<Rs> responseObserver) {

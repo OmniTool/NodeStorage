@@ -5,6 +5,10 @@ import hex.multinode.storage.model.dto.NodeDTO;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Эмулятор "Нелинейного сюжета"
+ * @param <N> Мультинода - логический блок контента, который может ветвиться
+ */
 public interface NodeManager<N> {
 
     N save(NodeDTO node);
