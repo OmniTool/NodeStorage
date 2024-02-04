@@ -1,27 +1,25 @@
 package hex.multinode.storage.service;
 
-import hex.multinode.storage.model.data.MultiNode;
 import hex.multinode.storage.model.dto.NodeDTO;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public interface NodeManager {
+public interface NodeManager<N> {
 
-    MultiNode save(NodeDTO node);
+    N save(NodeDTO node);
 
-    MultiNode save(MultiNode node);
+    N save(N node);
 
-    Optional<MultiNode> findById(String id);
+    Optional<N> findById(String id);
 
-    List<MultiNode> findNodesByTitle(String title);
+    List<N> findNodesByTitle(String title);
 
-    MultiNode update(NodeDTO node);
+    N update(NodeDTO node);
 
-    MultiNode deleteById(String id);
+    N deleteById(String id);
 
-    MultiNode fork(String parentNodeId, NodeDTO nodeDTO);
+    N fork(String fromNodeId, NodeDTO toNodeDTO, String answer);
 
-    MultiNode fork(String parentNodeId, String childNodeId);
+    N fork(String fromNodeId, String toNodeId, String answer);
 }
