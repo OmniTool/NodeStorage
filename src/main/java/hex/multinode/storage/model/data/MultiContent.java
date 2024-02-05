@@ -3,13 +3,13 @@ package hex.multinode.storage.model.data;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "multi_content")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MultiContent {

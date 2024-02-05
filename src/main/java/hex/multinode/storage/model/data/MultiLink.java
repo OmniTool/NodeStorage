@@ -8,7 +8,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "multi_link")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MultiLink {

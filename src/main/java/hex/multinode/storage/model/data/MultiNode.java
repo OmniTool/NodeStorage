@@ -13,7 +13,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "multi_node")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MultiNode {
