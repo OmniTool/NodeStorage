@@ -1,9 +1,9 @@
 #########
 ###
-GET http://localhost:8080/api/v1/nodes/find?title=Lorem ipsum
+GET http://localhost:8091/api/v1/nodes/find?title=Lorem ipsum
 
 ###
-POST http://localhost:8080/api/v1/nodes
+POST http://localhost:8091/api/v1/nodes
 Content-Type: application/json
 
 {
@@ -12,10 +12,10 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/api/v1/nodes/find?title=Lorem Lorem
+GET http://localhost:8091/api/v1/nodes/find?title=Lorem Lorem
 
 ###
-POST http://localhost:8080/api/v1/nodes
+POST http://localhost:8091/api/v1/nodes
 Content-Type: application/json
 
 {
@@ -23,10 +23,10 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/api/v1/nodes/find?title=Lorem Empty Content
+GET http://localhost:8091/api/v1/nodes/find?title=Lorem Empty Content
 
 ###
-POST http://localhost:8080/api/v1/nodes
+POST http://localhost:8091/api/v1/nodes
 Content-Type: application/json
 
 {
@@ -35,10 +35,10 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/api/v1/nodes/find?title=
+GET http://localhost:8091/api/v1/nodes/find?title=
 
 ###
-PATCH http://localhost:8080/api/v1/nodes
+PATCH http://localhost:8091/api/v1/nodes
 Content-Type: application/json
 
 {
@@ -48,10 +48,10 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/api/v1/nodes/find?title=Lorem Empty Content
+GET http://localhost:8091/api/v1/nodes/find?title=Lorem Empty Content
 
 ###
-PATCH http://localhost:8080/api/v1/nodes
+PATCH http://localhost:8091/api/v1/nodes
 Content-Type: application/json
 
 {
@@ -61,27 +61,27 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/api/v1/nodes/018d6fde-64fb-772c-9354-acdeed56c48d
+GET http://localhost:8091/api/v1/nodes/018d6fde-64fb-772c-9354-acdeed56c48d
 
 ###
-GET http://localhost:8080/api/v1/nodes/find?title=Lorem NEW
+GET http://localhost:8091/api/v1/nodes/find?title=Lorem NEW
 
 ###
-GET http://localhost:8080/api/v1/nodes/018d6fd9-138b-754b-aaa2-7c47b8774bf6
+GET http://localhost:8091/api/v1/nodes/018d6fd9-138b-754b-aaa2-7c47b8774bf6
 
 ###
-GET http://localhost:8080/api/v1/nodes/
+GET http://localhost:8091/api/v1/nodes/
 
 ###
-DELETE http://localhost:8080/api/v1/nodes/018d6fde-64fb-772c-9354-acdeed56c48d
+DELETE http://localhost:8091/api/v1/nodes/018d6fde-64fb-772c-9354-acdeed56c48d
 
 ###
-GET http://localhost:8080/api/v1/nodes/018d6fde-64fb-772c-9354-acdeed56c48d
+GET http://localhost:8091/api/v1/nodes/018d6fde-64fb-772c-9354-acdeed56c48d
 
 ###
-GET http://localhost:8080/api/v1/nodes/find
+GET http://localhost:8091/api/v1/nodes/find
 
 ###
-GET http://localhost:8080/api/v1/nodes/find?title=NotExistingTitle
+GET http://localhost:8091/api/v1/nodes/find?title=NotExistingTitle
 
 
